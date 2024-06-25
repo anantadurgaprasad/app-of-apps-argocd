@@ -1,23 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: app-of-apps
   namespace: argocd
 spec:
-  project: default
-  sources:
-  - repoURL: https://github.com/anantadurgaprasad/poc-argocd.git
-    targetRevision: HEAD
-    path: charts/grafana
-    helm:
-      valueFiles:
-      - $helmvalues/values/grafana/values.yml
-  - repoURL: https://github.com/anantadurgaprasad/poc-argocd.git
-    targetRevision: HEAD
-    ref: helmvalues
   destination:
+    namespace: default
     server: https://kubernetes.default.svc
-    namespace: grafana
+  project: default
+  source:
+    path: applications
+    repoURL: https://github.com/anantadurgaprasad/poc-argocd.git
+    targetRevision: HEAD
   syncPolicy:
     automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
@@ -25,6 +19,5 @@ spec:
       allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).
     syncOptions:     # Sync options which modifies sync behavior
     - Validate=true # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
-    - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.
     - PrunePropagationPolicy=foreground # Supported policies are background, foreground and orphan.
     - ApplyOutOfSyncOnly=true
