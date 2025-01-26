@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   sources:
-  - repoURL: https://github.com/anantadurgaprasad/poc-argocd.git
+  - repoURL: https://github.com/anantadurgaprasad/app-of-appsargocd.git
     targetRevision: HEAD
     path: charts/grafana
     helm:
       valueFiles:
       - $helmvalues/values/grafana/values.yml
-  - repoURL: https://github.com/anantadurgaprasad/poc-argocd.git
+  - repoURL: https://github.com/anantadurgaprasad/app-of-appsargocd.git
     targetRevision: HEAD
     ref: helmvalues
   destination:
